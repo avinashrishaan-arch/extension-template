@@ -1,0 +1,33 @@
+
+name: Build ORBITAL AIX
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Install Ant
+        run: sudo apt-get update && sudo apt-get install -y ant
+
+      - name: Build AIX
+        run: ant
+
+      - name: Save AIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: ORBITAL-AIX
+          path: '**/*.aix'
